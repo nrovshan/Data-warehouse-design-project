@@ -34,37 +34,37 @@ By defining the grain for each fact table (e.g., one row per loan, one row per p
 
 * Loan_fact: This table records loan-specific information such as loan_type, loan_amount, interest_rate, and the loan's start_date and end_date. It links to customers and accounts through foreign keys and is part of tracking loan activities over time.
 
-Payment_fact: Holds records of payments made, storing data like payment_type, payment_amount, and links to customer_id, account_id, and branch_id. Payments could be for loans or other services.
+* Payment_fact: Holds records of payments made, storing data like payment_type, payment_amount, and links to customer_id, account_id, and branch_id. Payments could be for loans or other services.
 
-Card_fact: Stores transactional data related to credit or debit card usage. It references the Card_dim table (which stores the card details) and links transactions to specific customers and accounts.
+* Card_fact: Stores transactional data related to credit or debit card usage. It references the Card_dim table (which stores the card details) and links transactions to specific customers and accounts.
 
-Card_dim: This dimension table holds details about the credit or debit cards, including card_type, card_number, expiration_date, and cvv. It links to customers and accounts, and is used in the Card_fact table to store transaction-related card information.
+* Card_dim: This dimension table holds details about the credit or debit cards, including card_type, card_number, expiration_date, and cvv. It links to customers and accounts, and is used in the Card_fact table to store transaction-related card information.
 
-Customers: This table stores all customer-related data, including personal information like name, phone number, email, and date of birth. It connects to other tables like Accounts, Loan_fact, Card_fact, and more via customer_id, which is used to track all the customer's related activities in the banking system.
+* Customers: This table stores all customer-related data, including personal information like name, phone number, email, and date of birth. It connects to other tables like Accounts, Loan_fact, Card_fact, and more via customer_id, which is used to track all the customer's related activities in the banking system.
 
-Accounts: Stores information about bank accounts such as account_type (e.g., checking, savings), balance, open_date, and account status. Each account links to customers via account_id and is involved in other transactions like loans and card payments.
+* Accounts: Stores information about bank accounts such as account_type (e.g., checking, savings), balance, open_date, and account status. Each account links to customers via account_id and is involved in other transactions like loans and card payments.
 
-AccountCard_Bridge: A bridge table that links Accounts and Card_fact, establishing many-to-many relationships between accounts and cards. Links accounts to cards, capturing relationships between a customer’s accounts and their cards.
+* AccountCard_Bridge: A bridge table that links Accounts and Card_fact, establishing many-to-many relationships between accounts and cards. Links accounts to cards, capturing relationships between a customer’s accounts and their cards.
 
-EmployeesBranches_Bridge: Another bridge table that links branches to employees, facilitating many-to-many relationships between employees and their branches. 
+* EmployeesBranches_Bridge: Another bridge table that links branches to employees, facilitating many-to-many relationships between employees and their branches. 
 
-Time: Stores time-related data, with individual columns for date, month, and year, used for tracking when events occur.
+* Time: Stores time-related data, with individual columns for date, month, and year, used for tracking when events occur.
 
-Employees: Stores employee details such as name, phone, email, salary, and branch_id (linking each employee to the branch they work at). Employees may also have roles in overseeing transactions, loans, or managing customer relationships.
+* Employees: Stores employee details such as name, phone, email, salary, and branch_id (linking each employee to the branch they work at). Employees may also have roles in overseeing transactions, loans, or managing customer relationships.
 
-Branches: The Branches table is meant to store information about the bank branches. It likely contains details such as: branch location, contact information and manager information.
+* Branches: The Branches table is meant to store information about the bank branches. It likely contains details such as: branch location, contact information and manager information.
 The purpose of this table is to identify where customer accounts are being managed, to track transactions at specific branches, and to organize branch-level operations.
 
-Audit: Used for tracking changes made to other tables. It records events like event_type (e.g., insert, update), the table_name being changed, record_id, old_values, new_values, changed_by, and the timestamp of the change. This helps ensure accountability and track data integrity over time.
+* Audit: Used for tracking changes made to other tables. It records events like event_type (e.g., insert, update), the table_name being changed, record_id, old_values, new_values, changed_by, and the timestamp of the change. This helps ensure accountability and track data integrity over time.
 
-Transaction_type: This table stores details about different transaction types to classify and analyze transactions effectively. Type of transaction (e.g., deposit, withdrawal, transfer) and detailed description of the transaction type.
+* Transaction_type: This table stores details about different transaction types to classify and analyze transactions effectively. Type of transaction (e.g., deposit, withdrawal, transfer) and detailed description of the transaction type.
 
-Channel: This table captures information on the channels through which transactions are made, useful for channel-specific analysis. Name of the transaction channel (e.g., online, ATM, branch), location for in-person transactions (for physical channels) and description or further details of the transaction channel.
+* Channel: This table captures information on the channels through which transactions are made, useful for channel-specific analysis. Name of the transaction channel (e.g., online, ATM, branch), location for in-person transactions (for physical channels) and description or further details of the transaction channel.
 Loan_type: This dimension provides classification for different loan types, aiding in loan-specific analysis.
 
-Payment_method: This table helps track the different methods used for payments, useful for analyzing payment trends and associated fees. Name of the payment method (e.g., credit card, bank transfer), fees associated with using the payment method and payment provider, if applicable (e.g., Visa, PayPal).
+* Payment_method: This table helps track the different methods used for payments, useful for analyzing payment trends and associated fees. Name of the payment method (e.g., credit card, bank transfer), fees associated with using the payment method and payment provider, if applicable (e.g., Visa, PayPal).
 
-Payment_currency: For systems handling multiple currencies, this dimension allows tracking of currency types and exchange rates. ISO code for the currency (e.g., USD, EUR), exchange rate relative to a base currency and currency symbol (e.g., $, €).
+* Payment_currency: For systems handling multiple currencies, this dimension allows tracking of currency types and exchange rates. ISO code for the currency (e.g., USD, EUR), exchange rate relative to a base currency and currency symbol (e.g., $, €).
 
 
 
@@ -127,13 +127,11 @@ The audit table stores both the old and new values for changes made in updates, 
 Note: Codes are in the log_customer.sql file
 
 5. To add time dimension table
-
 The Time Dimension allows to manage and analyze date-related data across different fact tables (e.g., for transactions, loans, payments, cards) without duplicating date fields in each table. It provides consistency and simplifies querying.
 By having a Time Dimension, we can easily break down data into different granularities—like day, month, quarter, and year. This is useful for reporting and analysis, such as tracking trends over time or performing period comparisons.
 
 
 6. Adding new dimension tables to fact tables:
-
 These new tables are dimension tables—designed to provide descriptive context for the fact data.
 Each new dimension table is created to capture attributes specific to its related fact table, such as transaction types, loan terms, and card types. These details would otherwise need to be duplicated in each row of the fact table, leading to redundancy. By separating them, each dimension encapsulates only unique information, which aligns with the goal of avoiding redundancy.
 I created these dimension tables:
@@ -150,7 +148,6 @@ Payment_currency: For systems handling multiple currencies, this dimension allow
 
 
 7. Creating Materialized View
-
 I created a materialized view to summarize total transaction amounts by customer and account for:
 Reduce computation time for frequently used aggregations 
 Improve query performance by eliminating the need to join and aggregate data from multiple tables every time.
