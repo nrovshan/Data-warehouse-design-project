@@ -106,27 +106,27 @@ Relationship: Mandatory on the fact table side, as every event needs a timestamp
 
 ## Differences between the first design and the last one:
 
-1. Missing fact table and unclear granularity
+1. Missing fact table and unclear granularity:
 The first design includes several transaction-related entities, but doesn’t explicitly represent a fact table. The transaction table could potentially be a fact table but would need clearer granularity and alignment with dimension tables.
 In the first case, the grain could be at the transaction level. The granularity isn’t clear in this design. For example, Loan, payment and card tables are related to customers and transactions, but their relationship to the main transactional flow isn’t granular enough. 
 
-2. Created 2 new tables for the M-N relationship
+2. Created 2 new tables for the M-N relationship:
 Account-Card (M-N) (Edge Case):
 In most cases, a Card is linked to one Account, and an Account can have multiple Cards (1-M relationship). However, this design allows one Card to be linked to multiple Accounts (e.g., business accounts), this could be an M-N relationship.
 Employee-Branch (M-N):
 This design allows employees to work across multiple branches, there could be an M-N relationship between Employees and Branches.
 Solution: For each potential M-N relationship, I introduced bridge tables to handle the many-to-many mapping effectively. 
 
-3. To eliminate Deposit, Transfer and Withdrawal tables (prevent over-normalization)
+3. To eliminate Deposit, Transfer and Withdrawal tables (prevent over-normalization):
 In designing the OLAP model with denormalized fact tables and dimension tables, I decided to eliminate the Deposit, Withdrawal, and Transfer tables to avoid over-normalization, ensuring a more streamlined fact and dimension structure aligned with the galaxy schema.
 
-4. An Audit (log_customer_audit) table for the Customers table is to track and log changes.
+4. An Audit (log_customer_audit) table for the Customers table is to track and log changes:
 The primary goal of the Audit table for the Customers table is to provide a detailed record of all modifications to customer data. 
 The audit table logs every change (insert, update, delete) made to customer records. This ensures that there is a trail of who made the changes, what the changes were, and when they were made.
 The audit table stores both the old and new values for changes made in updates, allowing to keep a history of how customer data has evolved over time.
 Note: Codes are in the log_customer.sql file
 
-5. To add time dimension table
+5. To add time dimension table:
 The Time Dimension allows to manage and analyze date-related data across different fact tables (e.g., for transactions, loans, payments, cards) without duplicating date fields in each table. It provides consistency and simplifies querying.
 By having a Time Dimension, we can easily break down data into different granularities—like day, month, quarter, and year. This is useful for reporting and analysis, such as tracking trends over time or performing period comparisons.
 
@@ -147,7 +147,7 @@ Payment_method: This table helps track the different methods used for payments, 
 Payment_currency: For systems handling multiple currencies, this dimension allows tracking of currency types and exchange rates. ISO code for the currency (e.g., USD, EUR), exchange rate relative to a base currency and currency symbol (e.g., $, €).
 
 
-7. Creating Materialized View
+7. Creating Materialized View:
 I created a materialized view to summarize total transaction amounts by customer and account for:
 Reduce computation time for frequently used aggregations 
 Improve query performance by eliminating the need to join and aggregate data from multiple tables every time.
