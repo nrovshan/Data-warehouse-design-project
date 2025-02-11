@@ -30,9 +30,9 @@ By defining the grain for each fact table (e.g., one row per loan, one row per p
 
 ## Explanation of tables:
 
-Transaction_fact: Stores detailed information about customer transactions; columns track transaction specifics like amount, type, and references to related customers, accounts, branches, and time.
+* Transaction_fact: Stores detailed information about customer transactions; columns track transaction specifics like amount, type, and references to related customers, accounts, branches, and time.
 
-Loan_fact: This table records loan-specific information such as loan_type, loan_amount, interest_rate, and the loan's start_date and end_date. It links to customers and accounts through foreign keys and is part of tracking loan activities over time.
+* Loan_fact: This table records loan-specific information such as loan_type, loan_amount, interest_rate, and the loan's start_date and end_date. It links to customers and accounts through foreign keys and is part of tracking loan activities over time.
 
 Payment_fact: Holds records of payments made, storing data like payment_type, payment_amount, and links to customer_id, account_id, and branch_id. Payments could be for loans or other services.
 
