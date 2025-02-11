@@ -1,7 +1,9 @@
+# Data-warehouse-design-project
+
 In this project, I applied the concepts of data modeling to design a comprehensive data warehouse schema for the banking sector. After improving my skills in this area, I realized the importance of defining measures, grains, and dimensions as a foundation for effective design. Here’s how I approached the solution:
 
 
-Defining Measures and Grains:
+## Defining Measures and Grains:
 
 I identified four key measures—Loans, Cards, Transactions, and Payments. Initially, I considered combining all of these into a single fact table under the "Transactions" umbrella, which would also include deposit, transfer, and withdrawal transaction types. However, each transaction type has unique measures, which would result in sparsely populated columns (many null values). For instance, card transactions would have nulls in loan-related fields, making the design inefficient.
 
@@ -26,7 +28,7 @@ By defining the grain for each fact table (e.g., one row per loan, one row per p
 
 
 
-Explanation of tables:
+## Explanation of tables:
 
 Transaction_fact: Stores detailed information about customer transactions; columns track transaction specifics like amount, type, and references to related customers, accounts, branches, and time.
 
@@ -66,7 +68,7 @@ Payment_currency: For systems handling multiple currencies, this dimension allow
 
 
 
-Cardinalities between the tables:
+## Cardinalities between the tables:
 
 Let’s list the cardinalities between key tables:
 
@@ -102,7 +104,7 @@ Relationship: Mandatory on the fact table side, as every event needs a timestamp
 
 
 
-Differences between the first design and the last one:
+## Differences between the first design and the last one:
 
 1. Missing fact table and unclear granularity
 The first design includes several transaction-related entities, but doesn’t explicitly represent a fact table. The transaction table could potentially be a fact table but would need clearer granularity and alignment with dimension tables.
